@@ -1,0 +1,43 @@
+# http://wiki.fast.ai/index.php/Kaggle_CLI
+kg download
+unzip -q train.zip
+unzip -q test.zip
+rm train.zip
+rm test.zip
+mkdir models
+mkdir sample
+mkdir valid
+mkdir train/dogs
+mkdir train/cats
+mkdir valid/dogs
+mkdir valid/cats
+mkdir sample/train
+mkdir sample/valid
+mkdir sample/train/dogs
+mkdir sample/valid/dogs
+mkdir sample/train/cats
+mkdir sample/valid/cats
+
+cd train
+mv dog.* dogs
+mv cat.* dogs
+
+cd train/cats/
+shuf -n 1000 -e * | xargs -i mv {} ../../valid/cats
+cd ../../train/dogs/
+shuf -n 1000 -e * | xargs -i mv {} ../../valid/dogs
+
+cd ../../train/cats/
+shuf -n 8 -e * | xargs -i cp {} ../../sample/train/cats
+cd ../../train/dogs/
+shuf -n 8 -e * | xargs -i mv {} ../../sample/train/dogs
+
+cd ../../valid/cats/
+shuf -n 4 -e * | xargs -i cp {} ../../sample/valid/cats
+cd ../../valid/dogs/
+shuf -n 4 -e * | xargs -i mv {} ../../sample/valid/dogs
+
+# ls -1 | wc -l
+# get top10 items
+#ls | head -10
+
